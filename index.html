@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SplitChat - Split bills easily on WhatsApp. No apps. No login. Just chat.">
+    <title>SplitChat - Split Bills Easily on WhatsApp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.5; }
+            50% { transform: translateY(-25px) rotate(3deg); opacity: 0.8; }
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.4; }
+            50% { transform: translateY(-35px) translateX(15px); opacity: 0.7; }
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(120vh); opacity: 0; }
+            5% { opacity: 0.6; }
+            95% { opacity: 0.6; }
+            100% { transform: translateY(-120vh); opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-element {
+            position: absolute;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            pointer-events: none;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .float-1 { animation: float 5s ease-in-out infinite; animation-delay: 0s; }
+        .float-2 { animation: float 6s ease-in-out infinite; animation-delay: 1.2s; }
+        .float-3 { animation: float 5.5s ease-in-out infinite; animation-delay: 2.4s; }
+        .float-4 { animation: floatSlow 7s ease-in-out infinite; animation-delay: 0.8s; }
+        .float-5 { animation: floatSlow 6.5s ease-in-out infinite; animation-delay: 2s; }
+        .float-6 { animation: float 6.8s ease-in-out infinite; animation-delay: 3.5s; }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #128C7E 0%, #25D366 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .delay-1 { animation-delay: 0.2s; opacity: 0; }
+        .delay-2 { animation-delay: 0.4s; opacity: 0; }
+        .delay-3 { animation-delay: 0.6s; opacity: 0; }
+        .delay-4 { animation-delay: 0.8s; opacity: 0; }
+
+        /* Mobile-first optimizations */
+        @media (max-width: 640px) {
+            .animate-element {
+                font-size: 0.7rem;
+            }
+            
+            /* Reduce number of floating elements on mobile */
+            .mobile-hide {
+                display: none;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .animate-element {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .animate-element {
+                font-size: 1rem;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #25D366;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #128C7E;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- Hero Section - Optimized Spacing -->
+    <section class="hero-bg min-h-screen flex items-center justify-center px-4 py-10 relative">
+        
+        <!-- Animated Background Elements - Fewer on Mobile -->
+        <!-- Floating Emojis - Strategic Placement -->
+        <div class="animate-element text-4xl md:text-5xl top-[5%] left-[5%] float-1">🍗</div>
+        <div class="animate-element text-4xl md:text-5xl top-[10%] right-[8%] float-2">💵</div>
+        <div class="animate-element text-3xl md:text-4xl bottom-[15%] left-[8%] float-3">🧾</div>
+        <div class="animate-element text-3xl md:text-4xl bottom-[10%] right-[10%] float-4">💰</div>
+        <div class="animate-element text-3xl top-[50%] left-[5%] float-5 mobile-hide">🍕</div>
+        <div class="animate-element text-3xl top-[45%] right-[5%] float-6 mobile-hide">☕</div>
+
+        <!-- Sliding Real Split Calculations - Reduced on Mobile -->
+        <div class="animate-element text-xs md:text-sm top-[15%] left-[22%]" style="animation: slideUp 22s linear infinite;">
+            Biryani<br>₹149/person
+        </div>
+        <div class="animate-element text-xs md:text-sm top-[20%] right-[18%]" style="animation: slideUp 20s linear infinite; animation-delay: 4s;">
+            ₹190 + ₹120
+        </div>
+        <div class="animate-element text-xs md:text-sm bottom-[25%] left-[25%] mobile-hide" style="animation: slideUp 24s linear infinite; animation-delay: 8s;">
+            Total: ₹310
+        </div>
+        <div class="animate-element text-xs md:text-sm bottom-[30%] right-[22%]" style="animation: slideUp 21s linear infinite; animation-delay: 12s;">
+            ₹450 ÷ 3 = ₹150
+        </div>
+        <div class="animate-element text-xs md:text-sm bottom-[18%] left-[20%] mobile-hide" style="animation: slideUp 23s linear infinite; animation-delay: 16s;">
+            Coffee ₹80 each
+        </div>
+        <div class="animate-element text-xs md:text-sm top-[35%] right-[15%] mobile-hide" style="animation: slideUp 19s linear infinite; animation-delay: 5s;">
+            Pizza ₹200/head
+        </div>
+
+        <!-- Main Content - Better Spacing -->
+        <div class="max-w-2xl mx-auto text-center relative z-10 w-full">
+            
+            <!-- Logo and Title - More Breathing Room -->
+            <div class="fade-in-up mb-6 sm:mb-8">
+                <h1 class="text-6xl sm:text-7xl md:text-8xl font-black text-white tracking-tight drop-shadow-2xl leading-none">
+                    💬 SplitChat
+                </h1>
+            </div>
+            
+            <!-- Tagline - Spaced Out -->
+            <p class="text-2xl sm:text-3xl md:text-4xl text-white font-light mb-6 sm:mb-8 fade-in-up delay-1 drop-shadow-lg leading-tight">
+                Split bills easily on WhatsApp
+            </p>
+            
+            <!-- Description - Clear and Readable -->
+            <p class="text-lg sm:text-xl md:text-2xl text-white/95 mb-10 sm:mb-12 leading-relaxed fade-in-up delay-2 drop-shadow max-w-xl mx-auto">
+                Split expenses with friends directly inside WhatsApp.
+            </p>
+            
+            <p class="text-base sm:text-lg md:text-xl text-white font-bold mb-10 sm:mb-12 fade-in-up delay-2 drop-shadow">
+                No apps. No login. Just chat.
+            </p>
+            
+            <!-- CTA Button - Prominent and Clear -->
+            <div class="fade-in-up delay-3 mb-12 sm:mb-16">
+                <a href="https://wa.me/918103626441?text=HI" 
+                   class="inline-flex items-center justify-center gap-3 bg-white text-green-600 px-8 py-5 sm:px-10 sm:py-6 text-lg sm:text-xl md:text-2xl font-black rounded-full shadow-2xl active:scale-95 transform transition-all duration-200 hover:shadow-3xl touch-manipulation"
+                   target="_blank" 
+                   rel="noopener">
+                    <svg class="w-7 h-7 sm:w-8 sm:h-8 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    <span>Start Splitting Now</span>
+                </a>
+            </div>
+
+            <!-- Quick Stats - Simplified and Spaced -->
+            <div class="grid grid-cols-3 gap-4 sm:gap-5 max-w-lg mx-auto fade-in-up delay-4">
+                <div class="bg-white/15 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/30 hover:bg-white/20 transition-all">
+                    <div class="text-4xl sm:text-5xl mb-2">⚡</div>
+                    <div class="text-sm sm:text-base text-white font-bold">Instant</div>
+                </div>
+                <div class="bg-white/15 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/30 hover:bg-white/20 transition-all">
+                    <div class="text-4xl sm:text-5xl mb-2">🔐</div>
+                    <div class="text-sm sm:text-base text-white font-bold">Secure</div>
+                </div>
+                <div class="bg-white/15 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/30 hover:bg-white/20 transition-all">
+                    <div class="text-4xl sm:text-5xl mb-2">🎯</div>
+                    <div class="text-sm sm:text-base text-white font-bold">Simple</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 sm:py-20 md:py-24 bg-white px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl sm:text-5xl md:text-5xl font-black text-center text-gray-900 mb-12 sm:mb-16">
+                Why SplitChat?
+            </h2>
+            
+            <div class="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- Feature 1 -->
+                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-7 sm:p-8 hover:shadow-2xl transition-all duration-300 active:scale-95 border-2 border-gray-100">
+                    <div class="text-5xl sm:text-6xl mb-5">💬</div>
+                    <h3 class="text-2xl sm:text-2xl font-bold text-gray-900 mb-3">Chat-Based</h3>
+                    <p class="text-gray-600 text-base sm:text-lg leading-relaxed">No complex forms. Just natural conversation</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-7 sm:p-8 hover:shadow-2xl transition-all duration-300 active:scale-95 border-2 border-gray-100">
+                    <div class="text-5xl sm:text-6xl mb-5">👥</div>
+                    <h3 class="text-2xl sm:text-2xl font-bold text-gray-900 mb-3">Easy Addition</h3>
+                    <p class="text-gray-600 text-base sm:text-lg leading-relaxed">Share contact cards to add friends</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-7 sm:p-8 hover:shadow-2xl transition-all duration-300 active:scale-95 border-2 border-gray-100">
+                    <div class="text-5xl sm:text-6xl mb-5">🧮</div>
+                    <h3 class="text-2xl sm:text-2xl font-bold text-gray-900 mb-3">Auto Calculate</h3>
+                    <p class="text-gray-600 text-base sm:text-lg leading-relaxed">Instant per-person amount calculation</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-7 sm:p-8 hover:shadow-2xl transition-all duration-300 active:scale-95 border-2 border-gray-100">
+                    <div class="text-5xl sm:text-6xl mb-5">🔐</div>
+                    <h3 class="text-2xl sm:text-2xl font-bold text-gray-900 mb-3">Consent-Based</h3>
+                    <p class="text-gray-600 text-base sm:text-lg leading-relaxed">Members approve before requests</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-7 sm:p-8 hover:shadow-2xl transition-all duration-300 active:scale-95 border-2 border-gray-100">
+                    <div class="text-5xl sm:text-6xl mb-5">📩</div>
+                    <h3 class="text-2xl sm:text-2xl font-bold text-gray-900 mb-3">Smart Alerts</h3>
+                    <p class="text-gray-600 text-base sm:text-lg leading-relaxed">Everyone gets notified instantly</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-7 sm:p-8 hover:shadow-2xl transition-all duration-300 active:scale-95 border-2 border-gray-100">
+                    <div class="text-5xl sm:text-6xl mb-5">⚡</div>
+                    <h3 class="text-2xl sm:text-2xl font-bold text-gray-900 mb-3">Lightning Fast</h3>
+                    <p class="text-gray-600 text-base sm:text-lg leading-relaxed">Split bills in seconds, not minutes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-16 sm:py-20 md:py-24 bg-gray-50 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl sm:text-5xl md:text-5xl font-black text-center text-gray-900 mb-12 sm:mb-16">
+                How It Works
+            </h2>
+            
+            <div class="space-y-6 sm:space-y-8">
+                <!-- Step 1 -->
+                <div class="flex gap-5 sm:gap-6 items-start bg-white p-6 sm:p-7 rounded-2xl shadow-md hover:shadow-xl transition-all">
+                    <div class="flex-shrink-0 w-16 h-16 sm:w-18 sm:h-18 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl flex items-center justify-center text-2xl sm:text-3xl font-black shadow-lg">
+                        1
+                    </div>
+                    <div class="flex-1 pt-1">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Send "HI"</h3>
+                        <p class="text-gray-600 text-base sm:text-lg leading-relaxed">Click the button to open WhatsApp and start chatting with SplitChat</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex gap-5 sm:gap-6 items-start bg-white p-6 sm:p-7 rounded-2xl shadow-md hover:shadow-xl transition-all">
+                    <div class="flex-shrink-0 w-16 h-16 sm:w-18 sm:h-18 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl flex items-center justify-center text-2xl sm:text-3xl font-black shadow-lg">
+                        2
+                    </div>
+                    <div class="flex-1 pt-1">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Share Contacts</h3>
+                        <p class="text-gray-600 text-base sm:text-lg leading-relaxed">Send contact cards of people to split the bill with</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flex gap-5 sm:gap-6 items-start bg-white p-6 sm:p-7 rounded-2xl shadow-md hover:shadow-xl transition-all">
+                    <div class="flex-shrink-0 w-16 h-16 sm:w-18 sm:h-18 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl flex items-center justify-center text-2xl sm:text-3xl font-black shadow-lg">
+                        3
+                    </div>
+                    <div class="flex-1 pt-1">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Enter Amount</h3>
+                        <p class="text-gray-600 text-base sm:text-lg leading-relaxed">Type the total bill amount and we'll calculate each share</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="flex gap-5 sm:gap-6 items-start bg-white p-6 sm:p-7 rounded-2xl shadow-md hover:shadow-xl transition-all">
+                    <div class="flex-shrink-0 w-16 h-16 sm:w-18 sm:h-18 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl flex items-center justify-center text-2xl sm:text-3xl font-black shadow-lg">
+                        4
+                    </div>
+                    <div class="flex-1 pt-1">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Confirm Split</h3>
+                        <p class="text-gray-600 text-base sm:text-lg leading-relaxed">Review the split details and confirm</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="flex gap-5 sm:gap-6 items-start bg-white p-6 sm:p-7 rounded-2xl shadow-md hover:shadow-xl transition-all">
+                    <div class="flex-shrink-0 w-16 h-16 sm:w-18 sm:h-18 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl flex items-center justify-center text-2xl sm:text-3xl font-black shadow-lg">
+                        5
+                    </div>
+                    <div class="flex-1 pt-1">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Everyone Notified</h3>
+                        <p class="text-gray-600 text-base sm:text-lg leading-relaxed">All participants get consent messages and split details</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="py-16 sm:py-20 md:py-24 bg-gradient-to-br from-green-800 via-green-700 to-green-600 text-white px-4">
+        <div class="max-w-3xl mx-auto text-center">
+            <div class="text-6xl sm:text-7xl mb-6" style="animation: pulse 3s ease-in-out infinite;">🔐</div>
+            <h2 class="text-4xl sm:text-5xl font-black mb-6">Privacy & Consent First</h2>
+            <p class="text-lg sm:text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
+                Before sharing any split details, participants receive a consent message. 
+                <span class="font-bold">We respect privacy and never spam users without permission.</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 sm:py-20 bg-white px-4">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="text-4xl sm:text-5xl font-black text-gray-900 mb-6">
+                Ready to Split Smart?
+            </h2>
+            <p class="text-lg sm:text-xl text-gray-600 mb-10 leading-relaxed">
+                Join thousands who are already splitting bills the easy way
+            </p>
+            <a href="https://wa.me/918103626441?text=HI" 
+               class="inline-flex items-center justify-center gap-3 bg-green-600 text-white px-10 py-5 sm:px-12 sm:py-6 text-lg sm:text-xl md:text-2xl font-black rounded-full shadow-xl hover:bg-green-700 active:scale-95 transition-all"
+               target="_blank" 
+               rel="noopener">
+                <svg class="w-7 h-7 sm:w-8 sm:h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                Get Started on WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-10 px-4 text-center">
+        <div class="max-w-4xl mx-auto">
+            <p class="text-lg sm:text-xl font-bold mb-2">SplitChat</p>
+            <p class="text-base sm:text-lg opacity-70 mb-4">Split smarter, not harder.</p>
+            <p class="text-sm sm:text-base opacity-60">&copy; 2026 SplitChat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.05,
+            rootMargin: '0px 0px -30px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe cards
+        document.querySelectorAll('.bg-gradient-to-br, .bg-white').forEach(el => {
+            if (el.closest('section')) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.6s ease-out';
+                observer.observe(el);
+            }
+        });
+
+        // Prevent zoom on double tap for iOS
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
